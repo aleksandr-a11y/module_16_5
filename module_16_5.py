@@ -17,12 +17,12 @@ class User(BaseModel):
 users: List[User ] = []
 
 @app.get('/')
-def get_all_users(request: Request) -> HTMLResponse:
+async def get_all_users(request: Request) -> HTMLResponse:
     return templates.TemplateResponse('users.html', {'request': request, 'users': users})
 
 
 @app.get('/user/{user_id}')
-def get_user(request: Request, user_id: int) -> HTMLResponse:
+async def get_user(request: Request, user_id: Annotated[int, Path(ge=1, le=100, description='Enter User ID')]) -> HTMLResponse:
     try:
         for user in users:
             if user.id == user_id:
